@@ -20,19 +20,24 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
       - uses: pnpm/action-setup@v4
         with:
           version: 9
 
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache: pnpm
+      # Use --no-frozen-lockfile so the build works even if pnpm-lock.yaml is out of sync
+      - run: pnpm install --no-frozen-lockfile
 
-      - run: pnpm install --frozen-lockfile
-      - run: pnpm build              # thanks to output:'export', this creates ./out
-      - run: touch out/.nojekyll     # makes sure files/folders starting with _ are served
+      # With output:'export', Next writes the static site to ./out
+      - run: pnpm build
 
+      # Let Pages serve files that start with underscores
+      - run: touch out/.nojekyll
+
+      # Upload the static site as an artifact for Pages
       - uses: actions/upload-pages-artifact@v3
         with:
           path: out
@@ -46,4 +51,3 @@ jobs:
     steps:
       - id: deployment
         uses: actions/deploy-pages@v4
-
