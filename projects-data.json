@@ -1,0 +1,33 @@
+[
+  {
+    "id": "tilt-wing-evtol",
+    "title": "Tilt-Wing eVTOL UAV",
+    "summary": "Designed a tilt-wing UAV in capstone; aerodynamic trade studies in OpenVSP/VSPAero, MATLAB performance model; achieved 6% induced drag reduction.",
+    "content": "In this project I co-led the design of a tilt-wing eVTOL UAV. I authored a custom MATLAB flight performance model and conducted aerodynamic trade studies in OpenVSP, VSPAero, and XFLR5. The final configuration reduced induced drag by 6% compared to the baseline. This work also included CAD modeling and structural design in SolidWorks, as well as team collaboration in an undergraduate aerospace design environment."
+  },
+  {
+    "id": "STMS",
+    "title": "Spacecraft Thermal Management Systems",
+    "summary": "Personal RC jet design with elliptical intake to circular duct; CAD + manufacturing experience.",
+    "content": "I designed and built an RC EDF jet using SolidWorks for CAD and my Ender 5 S1 3D printer for parts. The intake geometry transitions from an elliptical cross-section to a circular fan duct to minimize flow separation. This project improved my knowledge of intake design, additive manufacturing, and foam construction techniques."
+  },
+  {
+    "id": "fwmav",
+    "title": "Flapping Wing Micro Air Vehicles",
+    "summary": "Developed a star-tracking algorithm for CubeSat attitude determination using image processing in MATLAB.",
+    "content": "I worked on an undergraduate research project that developed computer vision algorithms for CubeSat attitude determination. Using MATLAB and simulated star field imagery, I built a centroiding algorithm to identify stars in noisy images and estimate spacecraft orientation. This work introduced me to space mission hardware, data analysis, and the importance of robust algorithms in low-SNR environments."
+  },
+
+  {
+    "id": "commercial-aircraft-design",
+    "title": "Commercial Aircraft Design, Sizing, and Trade Study",
+    "summary": "Developed a star-tracking algorithm for CubeSat attitude determination using image processing in MATLAB.",
+    "content": "I worked on an undergraduate research project that developed computer vision algorithms for CubeSat attitude determination. Using MATLAB and simulated star field imagery, I built a centroiding algorithm to identify stars in noisy images and estimate spacecraft orientation. This work introduced me to space mission hardware, data analysis, and the importance of robust algorithms in low-SNR environments."
+  },
+  {
+    "id": "autonomous-robot",
+    "title": "Autonomously Controlled Wheeled Robot",
+    "summary": "Developed a star-tracking algorithm for CubeSat attitude determination using image processing in MATLAB.",
+    "content": "I worked on an undergraduate research project that developed computer vision algorithms for CubeSat attitude determination. Using MATLAB and simulated star field imagery, I built a centroiding algorithm to identify stars in noisy images and estimate spacecraft orientation. This work introduced me to space mission hardware, data analysis, and the importance of robust algorithms in low-SNR environments."
+  }
+]
