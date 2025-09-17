@@ -5,10 +5,31 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { ArrowLeft, Calendar, Tag, ExternalLink, Github } from "lucide-react"
-import projects from '../../projects-data.json';
 
+// NOTE: We keep your inline data and use it to generate static params.
+// (Removed the conflicting import from '../../projects-data.json')
 
-const projects = {
+// Optional typing for clarity (safe with partial fields)
+type ProjectVideo = { url: string; title?: string; description?: string }
+type Project = {
+  title: string
+  category: string
+  year: string
+  duration: string
+  team: string
+  client: string
+  image?: string
+  overview?: string
+  challenge?: string
+  solution?: string
+  results: string[]
+  technologies: string[]
+  images: string[]
+  videos?: ProjectVideo[]
+}
+type ProjectMap = Record<string, Project>
+
+const projects: ProjectMap = {
   "evtol-tilt-wing": {
     title: "eVTOL Senior Design Project",
     category: "Drone Design",
@@ -315,6 +336,14 @@ const projects = {
   },
 }
 
+// STATIC EXPORT HOOKS for GitHub Pages
+export async function generateStaticParams() {
+  return Object.keys(projects).map((id) => ({ id }))
+}
+
+// Only allow the IDs defined above
+export const dynamicParams = false
+
 export default function ProjectPage({ params }: { params: { id: string } }) {
   const project = projects[params.id as keyof typeof projects]
 
@@ -337,27 +366,37 @@ export default function ProjectPage({ params }: { params: { id: string } }) {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
             <div>
               <div className="flex items-center gap-4 mb-4">
-                <Badge variant="secondary" className="bg-accent text-accent-foreground">
-                  {project.category}
-                </Badge>
-                <Badge variant="outline">{project.year}</Badge>
+                {project.category && (
+                  <Badge variant="secondary" className="bg-accent text-accent-foreground">
+                    {project.category}
+                  </Badge>
+                )}
+                {project.year && <Badge variant="outline">{project.year}</Badge>}
               </div>
 
-              <h1 className="text-4xl sm:text-5xl font-bold text-foreground mb-4 text-balance">{project.title}</h1>
+              <h1 className="text-4xl sm:text-5xl font-bold text-foreground mb-4 text-balance">
+                {project.title}
+              </h1>
 
-              <p className="text-lg text-muted-foreground leading-relaxed mb-6">{project.overview}</p>
+              {project.overview && (
+                <p className="text-lg text-muted-foreground leading-relaxed mb-6">{project.overview}</p>
+              )}
 
               <div className="grid grid-cols-2 gap-4 text-sm">
-                <div className="flex items-center gap-2">
-                  <Calendar className="h-4 w-4 text-accent" />
-                  <span className="text-muted-foreground">Duration:</span>
-                  <span className="font-medium">{project.duration}</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Tag className="h-4 w-4 text-accent" />
-                  <span className="text-muted-foreground">Team:</span>
-                  <span className="font-medium">{project.team}</span>
-                </div>
+                {project.duration && (
+                  <div className="flex items-center gap-2">
+                    <Calendar className="h-4 w-4 text-accent" />
+                    <span className="text-muted-foreground">Duration:</span>
+                    <span className="font-medium">{project.duration}</span>
+                  </div>
+                )}
+                {project.team && (
+                  <div className="flex items-center gap-2">
+                    <Tag className="h-4 w-4 text-accent" />
+                    <span className="text-muted-foreground">Team:</span>
+                    <span className="font-medium">{project.team}</span>
+                  </div>
+                )}
               </div>
             </div>
 
@@ -380,54 +419,62 @@ export default function ProjectPage({ params }: { params: { id: string } }) {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
             {/* Main Content */}
             <div className="lg:col-span-2 space-y-12">
-              <Card className="bg-card border-border">
-                <CardHeader>
-                  <CardTitle className="text-2xl text-card-foreground">Challenge</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-muted-foreground leading-relaxed">{project.challenge}</p>
-                </CardContent>
-              </Card>
+              {project.challenge && (
+                <Card className="bg-card border-border">
+                  <CardHeader>
+                    <CardTitle className="text-2xl text-card-foreground">Challenge</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-muted-foreground leading-relaxed">{project.challenge}</p>
+                  </CardContent>
+                </Card>
+              )}
 
-              <Card className="bg-card border-border">
-                <CardHeader>
-                  <CardTitle className="text-2xl text-card-foreground">Solution</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-muted-foreground leading-relaxed">{project.solution}</p>
-                </CardContent>
-              </Card>
+              {project.solution && (
+                <Card className="bg-card border-border">
+                  <CardHeader>
+                    <CardTitle className="text-2xl text-card-foreground">Solution</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-muted-foreground leading-relaxed">{project.solution}</p>
+                  </CardContent>
+                </Card>
+              )}
 
-              <Card className="bg-card border-border">
-                <CardHeader>
-                  <CardTitle className="text-2xl text-card-foreground">Key Results</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <ul className="space-y-3">
-                    {project.results.map((result, index) => (
-                      <li key={index} className="flex items-start gap-3">
-                        <div className="w-2 h-2 bg-accent rounded-full mt-2 flex-shrink-0"></div>
-                        <span className="text-muted-foreground">{result}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </CardContent>
-              </Card>
+              {project.results && project.results.length > 0 && (
+                <Card className="bg-card border-border">
+                  <CardHeader>
+                    <CardTitle className="text-2xl text-card-foreground">Key Results</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <ul className="space-y-3">
+                      {project.results.map((result, index) => (
+                        <li key={index} className="flex items-start gap-3">
+                          <div className="w-2 h-2 bg-accent rounded-full mt-2 flex-shrink-0"></div>
+                          <span className="text-muted-foreground">{result}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </CardContent>
+                </Card>
+              )}
 
               {/* Project Images */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {project.images.map((image, index) => (
-                  <div key={index} className="relative">
-                    <Image
-                      src={image || "/placeholder.svg"}
-                      alt={`${project.title} - Image ${index + 1}`}
-                      width={400}
-                      height={300}
-                      className="w-full h-48 object-cover rounded-lg"
-                    />
-                  </div>
-                ))}
-              </div>
+              {project.images && project.images.length > 0 && (
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  {project.images.map((image, index) => (
+                    <div key={index} className="relative">
+                      <Image
+                        src={image || "/placeholder.svg"}
+                        alt={`${project.title} - Image ${index + 1}`}
+                        width={400}
+                        height={300}
+                        className="w-full h-48 object-cover rounded-lg"
+                      />
+                    </div>
+                  ))}
+                </div>
+              )}
 
               {/* Project Videos */}
               {project.videos && project.videos.length > 0 && (
@@ -463,44 +510,56 @@ export default function ProjectPage({ params }: { params: { id: string } }) {
 
             {/* Sidebar */}
             <div className="space-y-8">
-              <Card className="bg-card border-border">
-                <CardHeader>
-                  <CardTitle className="text-xl text-card-foreground">Project Details</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div>
-                    <p className="text-sm font-medium text-muted-foreground mb-1">Client</p>
-                    <p className="text-foreground">{project.client}</p>
-                  </div>
-                  <div>
-                    <p className="text-sm font-medium text-muted-foreground mb-1">Duration</p>
-                    <p className="text-foreground">{project.duration}</p>
-                  </div>
-                  <div>
-                    <p className="text-sm font-medium text-muted-foreground mb-1">Team Size</p>
-                    <p className="text-foreground">{project.team}</p>
-                  </div>
-                  <div>
-                    <p className="text-sm font-medium text-muted-foreground mb-1">Year</p>
-                    <p className="text-foreground">{project.year}</p>
-                  </div>
-                </CardContent>
-              </Card>
+              {(project.client || project.duration || project.team || project.year) && (
+                <Card className="bg-card border-border">
+                  <CardHeader>
+                    <CardTitle className="text-xl text-card-foreground">Project Details</CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    {project.client && (
+                      <div>
+                        <p className="text-sm font-medium text-muted-foreground mb-1">Client</p>
+                        <p className="text-foreground">{project.client}</p>
+                      </div>
+                    )}
+                    {project.duration && (
+                      <div>
+                        <p className="text-sm font-medium text-muted-foreground mb-1">Duration</p>
+                        <p className="text-foreground">{project.duration}</p>
+                      </div>
+                    )}
+                    {project.team && (
+                      <div>
+                        <p className="text-sm font-medium text-muted-foreground mb-1">Team Size</p>
+                        <p className="text-foreground">{project.team}</p>
+                      </div>
+                    )}
+                    {project.year && (
+                      <div>
+                        <p className="text-sm font-medium text-muted-foreground mb-1">Year</p>
+                        <p className="text-foreground">{project.year}</p>
+                      </div>
+                    )}
+                  </CardContent>
+                </Card>
+              )}
 
-              <Card className="bg-card border-border">
-                <CardHeader>
-                  <CardTitle className="text-xl text-card-foreground">Technologies Used</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="flex flex-wrap gap-2">
-                    {project.technologies.map((tech, index) => (
-                      <Badge key={index} variant="secondary" className="text-xs">
-                        {tech}
-                      </Badge>
-                    ))}
-                  </div>
-                </CardContent>
-              </Card>
+              {project.technologies && project.technologies.length > 0 && (
+                <Card className="bg-card border-border">
+                  <CardHeader>
+                    <CardTitle className="text-xl text-card-foreground">Technologies Used</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="flex flex-wrap gap-2">
+                      {project.technologies.map((tech, index) => (
+                        <Badge key={index} variant="secondary" className="text-xs">
+                          {tech}
+                        </Badge>
+                      ))}
+                    </div>
+                  </CardContent>
+                </Card>
+              )}
 
               <div className="space-y-4">
                 <Button className="w-full bg-accent text-accent-foreground hover:bg-accent/90">
