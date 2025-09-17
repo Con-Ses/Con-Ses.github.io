@@ -5,6 +5,8 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { ArrowLeft, Calendar, Tag, ExternalLink, Github } from "lucide-react"
+import projects from '../../projects-data.json';
+
 
 const projects = {
   "evtol-tilt-wing": {
