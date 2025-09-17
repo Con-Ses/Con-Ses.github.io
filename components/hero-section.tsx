@@ -40,7 +40,7 @@ export function HeroSection() {
             <div className="relative">
               <div className="w-80 h-80 rounded-2xl overflow-hidden bg-muted">
                 <Image
-                  src="/professional-engineer-headshot.png"
+                  src="IMG_4560.JPG"
                   alt="Connor Sessions - Aerospace Engineer"
                   width={320}
                   height={320}
